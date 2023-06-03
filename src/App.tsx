@@ -20,7 +20,6 @@ export const App = () => {
 
   return (
     <div className='container flex flex-col items-start justify-start min-h-screen border-2'>
-      <div>{theme}</div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant='ghost' size='sm' className='px-0 w-9'>
