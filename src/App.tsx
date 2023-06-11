@@ -14,6 +14,7 @@ import { useForm } from 'react-hook-form'
 import { toast } from './hooks/useToast'
 import { DemoForm } from './DemoForm'
 import { Toaster } from './primitives/Toaster'
+import { cn } from './lib/utils'
 
 export const App = () => {
 	const themeContext = useContext(ThemeContext)
@@ -23,6 +24,35 @@ export const App = () => {
 	}
 
 	const { theme, setTheme } = themeContext
+
+	const tokens = [
+		'primary',
+		'secondary',
+		'accent',
+		'destructive',
+		'muted',
+		'card',
+		'popover',
+	]
+	const expTokens = [
+		'primary',
+		'secondary',
+		'accent',
+		'destructive',
+		'muted',
+		'card',
+		'popover',
+	]
+
+	const DemoCard = ({ variant }: { variant: string }) => {
+		return (
+			<div
+				className={`w-[180px] capitalize h-[180px] bg-${variant} justify-center items-center flex text-${variant}-foreground`}
+			>
+				{variant}
+			</div>
+		)
+	}
 
 	return (
 		<div className='container flex flex-col items-start justify-start min-h-screen border-2'>
@@ -49,15 +79,17 @@ export const App = () => {
 					</DropdownMenuItem>
 				</DropdownMenuContent>
 			</DropdownMenu>
-			<Button variant='default' onClick={() => setTheme('dark')}>
-				Dark
-			</Button>
-			<Button variant='outline' onClick={() => setTheme('light')}>
-				Light
-			</Button>
-			<Button variant='destructive' onClick={() => setTheme('system')}>
-				System
-			</Button>
+			{/* THEME DISPLAY */}
+			<div className='flex gap-5 my-10 flex-wrap'>
+				{tokens.map((token) => (
+					<DemoCard variant={token} />
+				))}
+			</div>
+			<div className='flex gap-5 my-10 flex-wrap'>
+				{expTokens.map((token) => (
+					<DemoCard variant={token} />
+				))}
+			</div>
 
 			{/* demo form */}
 			<DemoForm />
