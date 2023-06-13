@@ -12,6 +12,9 @@ import { DemoForm } from './DemoForm'
 import { Toaster } from './primitives/Toaster'
 import { cn } from './lib/utils'
 import { VariantProps, cva } from 'class-variance-authority'
+import { SidebarNav } from './components/SidebarNav'
+import { NAV_CONTENT } from './constants'
+import { TopNav } from './components/TopNav'
 
 export const App = () => {
   const themeContext = useContext(ThemeContext)
@@ -23,17 +26,6 @@ export const App = () => {
   const { theme, setTheme } = themeContext
 
   const tokens = [
-    'primary',
-    'secondary',
-    'accent',
-    'destructive',
-    'success',
-    'info',
-    'muted',
-    'card',
-    'popover',
-  ]
-  const expTokens = [
     'primary',
     'secondary',
     'accent',
@@ -75,44 +67,27 @@ export const App = () => {
   }
 
   return (
-    <div className='container flex flex-col items-start justify-start min-h-screen border-2'>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant='ghost' size='sm' className='px-0 w-9'>
-            <Icons.sun className='transition-all scale-100 rotate-0 dark:-rotate-90 dark:scale-0' />
-            <Icons.moon className='absolute transition-all scale-0 rotate-90 dark:rotate-0 dark:scale-100' />
-            <span className='sr-only'>Toggle theme</span>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align='end'>
-          <DropdownMenuItem onClick={() => setTheme('light')}>
-            <Icons.sun className='w-4 h-4 mr-2' />
-            <span>Light</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setTheme('dark')}>
-            <Icons.moon className='w-4 h-4 mr-2' />
-            <span>Dark</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setTheme('system')}>
-            <Icons.laptop className='w-4 h-4 mr-2' />
-            <span>System</span>
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-      {/* THEME DISPLAY */}
-      <div className='flex flex-wrap gap-5 my-10'>
-        {tokens.map((token) => (
-          <DemoCard variant={token as VariantProps<typeof colorVariants>} />
-        ))}
+    <div className='relative flex flex-col min-h-screen'>
+      {/* HEADER */}
+      <header className='sticky top-0 z-40 w-full border-b supports-backdrop-blur:bg-background/60 bg-background/95 backdrop-blur'>
+        <TopNav />
+      </header>
+      {/* BODY */}
+      <div className='flex-1'>
+        <div className='container flex-1 items-start md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10'>
+          <SidebarNav items={NAV_CONTENT.SIDE} />
+          <main className='relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]'>
+            <div className='flex flex-wrap gap-5 py-10'>
+              {tokens.map((token) => (
+                <DemoCard
+                  variant={token as VariantProps<typeof colorVariants>}
+                />
+              ))}
+            </div>
+            <DemoForm />
+          </main>
+        </div>
       </div>
-      <div className='flex flex-wrap gap-5 my-10'>
-        {expTokens.map((token) => (
-          <DemoCard variant={token as VariantProps<typeof colorVariants>} />
-        ))}
-      </div>
-
-      {/* demo form */}
-      <DemoForm />
       <Toaster />
     </div>
   )
